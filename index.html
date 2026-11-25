@@ -29,14 +29,14 @@
     <div class="eggmsg" role="status"><p class="script" style="font-size: 38px; color: #E6D3AE">С Новым годом,</p><p class="caps" style="font-size: 17px; margin-top: 6px; letter-spacing: .2em">команда РЕСО-Лизинг!</p></div>
   </div>
 </sc-if>
-<main class="sheet" id="top">
+<div class="flashfx {{flash.cls}}" aria-hidden="true" style="left: {{flash.x}}; top: {{flash.y}}"></div><main class="sheet" id="top">
 
   <!-- 1 · ТИТУЛ -->
   <section class="sec dk hero" aria-labelledby="t-title" style="padding-top: 56px; padding-bottom: 92px">
-    <div class="scene-box" aria-hidden="true">
+    <div class="scene-box">
       <div class="stage" style="{{stageStyle}}">
         <img class="hero-bg" src="assets/img/hero-scene.webp" alt="">
-        <div class="bdoor"><img class="bd-in" src="assets/img/door-lobby.webp" alt=""><img class="bd-l" src="assets/img/door-left.webp" alt=""><img class="bd-r" src="assets/img/door-right.webp" alt=""></div><div class="bdoor-glow"></div><div class="sign-glow"></div>
+        <div class="bdoor {{doorCls}}"><img class="bd-in" src="assets/img/door-lobby.webp" alt=""><img class="bd-l" src="assets/img/door-left.webp" alt=""><img class="bd-r" src="assets/img/door-right.webp" alt=""></div><div class="bdoor-glow {{doorCls}}"></div><button type="button" class="door-hit" data-dc-onclick="doorClick" aria-label="Открыть двери кинотеатра"></button><sc-if value="{{doorBurst}}" hint-placeholder-val="{{ false }}"><span class="door-burst" aria-hidden="true"><sc-for list="{{burst}}" as="b" hint-placeholder-count="0"><i style="--dx: {{b.x}}; --dy: {{b.y}}; --r: {{b.r}}; background: {{b.bg}}; width: {{b.w}}; height: {{b.h}}; animation-delay: {{b.d}}"></i></sc-for></span></sc-if><div class="sign-glow"></div><button type="button" class="neon {{neon.cls}}" data-dc-onclick="neonClick" aria-label="Неоновая вывеска «Премьера»"><sc-if value="{{neon.ny}}" hint-placeholder-val="{{ false }}">С Новым годом!</sc-if><sc-if value="{{neon.std}}" hint-placeholder-val="{{ true }}">Прем<span class="nf">ь</span>ера</sc-if><sc-if value="{{neon.sparks}}" hint-placeholder-val="{{ false }}"><span class="sparks" aria-hidden="true"><sc-for list="{{sparks}}" as="k" hint-placeholder-count="0"><i style="--dx: {{k.x}}; --dy: {{k.y}}; animation-delay: {{k.d}}"></i></sc-for></span></sc-if></button>
         <span class="tw" style="left: 58.96%; top: 9.82%; animation-delay: -0.00s"></span>
         <span class="tw" style="left: 61.25%; top: 10.36%; animation-delay: -0.37s"></span>
         <span class="tw" style="left: 63.54%; top: 9.82%; animation-delay: -0.74s"></span>
@@ -79,7 +79,9 @@
         </sc-if>
       </div>
       <div class="hsnow"><sc-for list="{{hflakes}}" as="f" hint-placeholder-count="0"><span class="hsf" style="left: {{f.l}}; width: {{f.s}}; height: {{f.s}}; opacity: {{f.o}}; animation-duration: {{f.d}}; animation-delay: {{f.dl}}"></span></sc-for></div>
+      <div class="beams"><span class="beam b1"></span><span class="beam b2"></span><span class="beam b3"></span></div>
       <div class="hero-shade"></div>
+      <div class="glints"><sc-for list="{{glints}}" as="g" hint-placeholder-count="0"><span class="glint" style="left: {{g.l}}; top: {{g.t}}; width: {{g.s}}; height: {{g.s}}; animation-delay: {{g.d}}; animation-duration: {{g.u}}"></span></sc-for></div>
     </div>
     <div class="wrap hero-frame" style="{{frameStyle}}">
       <div>
@@ -87,7 +89,7 @@
         <p class="caps mutedd" style="font-size: 15px; letter-spacing: .26em; margin-top: 22px">RESO-LEASING PICTURES PRESENTS</p>
         <h1 id="t-title" style="margin: 20px 0 0; font-weight: 400">
           <span class="caps" style="display: block; font-size: clamp(34px, 4.4vw, 66px); line-height: 1.08; letter-spacing: .08em; color: #EFE7DA">Новогодняя вечеринка</span>
-          <span class="script" style="display: block; font-size: clamp(54px, 8vw, 124px); color: #E6D3AE; margin-top: 4px">РЕСО-Лизинг</span>
+          <span class="script gold-text" style="display: block; font-size: clamp(54px, 8vw, 124px); color: #E6D3AE; margin-top: 4px">РЕСО-Лизинг</span>
         </h1>
         <p class="body mutedd" style="font-style: italic; margin-top: 10px">Вечер кинопремьер</p>
         <a class="down" href="#booking" style="margin-top: 30px">
@@ -101,8 +103,9 @@
   </section>
 
   <!-- 2 · АФИША + ПРОГРАММА -->
-  <section class="sec cr" aria-label="О вечере">
+  <section id="about" class="sec cr" aria-label="О вечере">
     <div class="torn torn-cr" aria-hidden="true"></div>
+    <sc-if value="{{leader}}" hint-placeholder-val="{{ false }}"><div class="leader" aria-hidden="true"><div class="leader-ring"></div><span class="ln n3">3</span><span class="ln n2">2</span><span class="ln n1">1</span></div></sc-if>
     <img loading="lazy" decoding="async" class="sprig-r" src="assets/img/film-strip.webp" alt="" aria-hidden="true">
     <div class="wrap cols2">
       <div>
@@ -110,7 +113,7 @@
         <ul style="list-style: none; margin: 30px auto 0; padding: 0; display: flex; flex-direction: column; gap: 14px; max-width: 440px">
           <li class="body"><span class="caps" style="font-size: 15px; display: block; color: #6b5d4f">Жанр</span>Костюмированная кинопремьера</li>
           <li class="body"><span class="caps" style="font-size: 15px; display: block; color: #6b5d4f">В главных ролях</span>Ты и твои коллеги</li>
-          <li class="body"><span class="caps" style="font-size: 15px; display: block; color: #6b5d4f">Спецэффекты</span>Красная дорожка, welcome-drink, фотосессия, танцы</li>
+          <li class="body"><span class="caps" style="font-size: 15px; display: block; color: #6b5d4f">Спецэффекты</span>Красная дорожка, фуршет, фотосессия, ведущий, кавер-группа и танцы</li>
         </ul>
         <p class="caps" style="margin-top: 34px; font-size: clamp(34px, 3.4vw, 48px); letter-spacing: .14em; font-weight: 500">23.12.2026</p>
         <p class="body muted" style="font-style: italic">17:00, сбор гостей</p>
@@ -118,31 +121,24 @@
 
       <div class="prog">
         <h2 class="caps h2" style="margin-bottom: 30px">Программа вечера</h2>
-        <div style="max-width: 460px; margin: 0 auto; display: flex; flex-direction: column">
-          <div class="tl" style="padding: 10px 0">
-            <img loading="lazy" decoding="async" class="tl-ico" src="assets/img/icon-red-carpet.webp" alt="" aria-hidden="true">
-            <div class="tl-line"><span class="tl-dot"></span></div>
-            <div><div class="caps" style="font-size: 22px; letter-spacing: .1em">17:00</div><div class="body">Сбор гостей, красная дорожка</div></div>
+        <div class="pg">
+          <div class="pg-block">
+            <p class="pg-time">17:00</p>
+            <ul class="pg-list body">
+              <li><img loading="lazy" decoding="async" class="pg-ico" src="assets/img/icon-guests.webp" alt="" aria-hidden="true"><span>Сбор гостей</span></li>
+              <li><img loading="lazy" decoding="async" class="pg-ico" src="assets/img/icon-red-carpet.webp" alt="" aria-hidden="true"><span>Красная дорожка</span></li>
+              <li><img loading="lazy" decoding="async" class="pg-ico" src="assets/img/icon-drinks.webp" alt="" aria-hidden="true"><span>Фуршет</span></li>
+              <li><img loading="lazy" decoding="async" class="pg-ico" src="assets/img/icon-camera.webp" alt="" aria-hidden="true"><span>Фотосессия</span></li>
+            </ul>
           </div>
-          <div class="tl" style="padding: 10px 0">
-            <img loading="lazy" decoding="async" class="tl-ico" src="assets/img/icon-drinks.webp" alt="" aria-hidden="true">
-            <div class="tl-line"><span class="tl-dot"></span></div>
-            <div><div class="body">Welcome-drink</div></div>
-          </div>
-          <div class="tl" style="padding: 10px 0">
-            <img loading="lazy" decoding="async" class="tl-ico" src="assets/img/icon-camera.webp" alt="" aria-hidden="true">
-            <div class="tl-line"><span class="tl-dot"></span></div>
-            <div><div class="body">Фотосессия</div></div>
-          </div>
-          <div class="tl" style="padding: 10px 0">
-            <img loading="lazy" decoding="async" class="tl-ico" src="assets/img/icon-clapper.webp" alt="" aria-hidden="true">
-            <div class="tl-line"><span class="tl-dot"></span></div>
-            <div><div class="body">Конкурс на лучший кинообраз</div></div>
-          </div>
-          <div class="tl" style="padding: 10px 0">
-            <img loading="lazy" decoding="async" class="tl-ico" src="assets/img/icon-disco.webp" alt="" aria-hidden="true">
-            <div class="tl-line"><span class="tl-dot"></span></div>
-            <div><div class="body">Танцы</div></div>
+          <div class="pg-block">
+            <p class="pg-time">18:00</p>
+            <ul class="pg-list body">
+              <li><img loading="lazy" decoding="async" class="pg-ico" src="assets/img/icon-host.webp" alt="" aria-hidden="true"><span>Банкет с участием ведущего <b>Дмитрия Добродеева</b></span></li>
+              <li class="pg-hl"><img loading="lazy" decoding="async" class="pg-ico" src="assets/img/icon-clapper.webp" alt="" aria-hidden="true"><span><a href="#contest">Конкурс на лучший кинообраз</a></span></li>
+              <li><img loading="lazy" decoding="async" class="pg-ico" src="assets/img/icon-band.webp" alt="" aria-hidden="true"><span>Выступление кавер-группы <b>Black or White</b></span></li>
+              <li><img loading="lazy" decoding="async" class="pg-ico" src="assets/img/icon-disco.webp" alt="" aria-hidden="true"><span>Танцы</span></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -166,16 +162,16 @@
         </div>
         <div id="dress" class="dress">
           <h2 class="caps h2" style="color: #EFE7DA">Дресс-код</h2>
-          <p class="body mutedd" style="margin: 18px 0 0; max-width: 620px">В этот вечер вы можете перевоплотиться в легендарного Джеймса Бонда, элегантную героиню «Великого Гэтсби», волшебника из Хогвартса или дерзкого персонажа Тарантино - выбор за вами! Включайте фантазию на максимум.</p>
+          <p class="body mutedd" style="margin: 18px 0 0; max-width: 620px">В этот вечер каждый может стать героем любимого фильма: искателем приключений, путешественником во времени, девочкой из волшебной страны или самой элегантной няней на свете. Четыре идеи ниже - для вдохновения, свой образ тоже приветствуется. Включайте фантазию на максимум!</p>
           <p class="script desk" style="font-size: 44px; color: #E6D3AE; margin-top: 26px">Идеи для кинообраза ↓</p>
           <p class="caps mob" style="margin: 36px 0 6px; font-size: 15px; color: #CFC3B1">Идеи для кинообраза</p>
         </div>
       </div>
       <div class="polas">
-        <figure class="pola" style="transform: rotate(-2deg)"><img src="assets/img/look-harley.webp" alt="Пример костюма: Харли Квинн" loading="lazy" style="object-position: 50% 30%"><figcaption class="script" style="font-size: 24px; color: #2E2721; margin-top: 10px">Харли Квинн</figcaption></figure>
-        <figure class="pola" style="transform: rotate(2deg)"><img src="assets/img/look-maleficent.webp" alt="Пример костюма: Малефисента" loading="lazy" style="object-position: 50% 15%"><figcaption class="script" style="font-size: 24px; color: #2E2721; margin-top: 10px">Малефисента</figcaption></figure>
-        <figure class="pola" style="transform: rotate(-1.5deg)"><img src="assets/img/look-bond.webp" alt="Пример костюма: Джеймс Бонд" loading="lazy" style="object-position: 50% 10%"><figcaption class="script" style="font-size: 24px; color: #2E2721; margin-top: 10px">Джеймс Бонд</figcaption></figure>
-        <figure class="pola" style="transform: rotate(2deg)"><img src="assets/img/look-mcgonagall.webp" alt="Пример костюма: Макгонагалл" loading="lazy" style="object-position: 50% 10%"><figcaption class="script" style="font-size: 24px; color: #2E2721; margin-top: 10px">Макгонагалл</figcaption></figure>
+        <figure class="pola {{pc.ind}}" style="transform: rotate(-2deg)"><img src="assets/img/look-indiana-jones.webp" style="object-position: 50% 18%" alt="Пример костюма: Индиана Джонс - шляпа, коричневая куртка, рубашка и сумка через плечо" loading="lazy"><button type="button" class="pola-hit" data-dc-onclick="look_ind" aria-label="Сюрприз от образа «Индиана Джонс»"></button><figcaption><span class="script" style="display: block; margin-top: 12px; font-size: 24px; color: #2E2721">Индиана Джонс</span><span class="pola-note">шляпа, коричневая куртка, рубашка и сумка через плечо</span></figcaption></figure>
+        <figure class="pola {{pc.marty}}" style="transform: rotate(2deg)"><img src="assets/img/look-marty-mcfly.webp" style="object-position: 50% 18%" alt="Пример костюма: Марти Макфлай - красный жилет, джинсовка и клетчатая рубашка" loading="lazy"><span class="fx fx-flash"></span><span class="fx fx-fire f1"></span><span class="fx fx-fire f2"></span><span class="fx fx-badge">Вернулся из 1985!</span><button type="button" class="pola-hit" data-dc-onclick="look_marty" aria-label="Сюрприз от образа «Марти Макфлай»"></button><figcaption><span class="script" style="display: block; margin-top: 12px; font-size: 24px; color: #2E2721">Марти Макфлай</span><span class="pola-note">красный жилет, джинсовка и клетчатая рубашка</span></figcaption></figure>
+        <figure class="pola {{pc.dor}}" style="transform: rotate(-1.5deg)"><img src="assets/img/look-dorothy.webp" style="object-position: 50% 18%" alt="Пример костюма: Дороти - платье в голубую клетку, косички и корзинка" loading="lazy"><span class="fx fx-swirl"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="fx fx-shoes"><i></i><i></i><i></i><i></i><i></i></span><span class="fx fx-msg">Нет места лучше, чем РЕСО-Лизинг</span><button type="button" class="pola-hit" data-dc-onclick="look_dor" aria-label="Сюрприз от образа «Дороти»"></button><figcaption><span class="script" style="display: block; margin-top: 12px; font-size: 24px; color: #2E2721">Дороти</span><span class="pola-note">платье в голубую клетку, косички и корзинка</span></figcaption></figure>
+        <figure class="pola {{pc.mary}}" style="transform: rotate(2deg)"><img src="assets/img/look-mary-poppins.webp" style="object-position: 50% 18%" alt="Пример костюма: Мэри Поппинс - элегантное пальто, шляпка, перчатки и зонт" loading="lazy"><span class="fx fx-stars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><button type="button" class="pola-hit" data-dc-onclick="look_mary" aria-label="Сюрприз от образа «Мэри Поппинс»"></button><figcaption><span class="script" style="display: block; margin-top: 12px; font-size: 24px; color: #2E2721">Мэри Поппинс</span><span class="pola-note">элегантное пальто, шляпка, перчатки и зонт</span></figcaption></figure>
       </div>
     </div>
   </section>
@@ -187,29 +183,32 @@
   
 
   <!-- 6 · БРОНИРОВАНИЕ -->
-  <section id="contest" class="sec cr" aria-labelledby="t-contest">
-    <div class="torn torn-cr" aria-hidden="true"></div>
-    <div class="wrap contest-cols" style="max-width: 1000px">
+  <section id="contest" class="sec velvet" aria-labelledby="t-contest">
+    <div class="torn torn-velvet" aria-hidden="true"></div>
+    <div class="wrap contest-cols marquee" style="max-width: 1000px">
       
       <div>
         
         
         
-        <h2 id="t-contest" class="caps h2" style="line-height: 1.4">Конкурс на лучший<br>кинообраз</h2><h3 class="caps" style="margin-top: 44px; font-size: 18px">Как будут отбирать победителя</h3><ol style="list-style: none; margin: 18px auto 0; padding: 0; max-width: 480px; display: flex; flex-direction: column; gap: 14px; text-align: left">
+        <p class="star-badge">★ Главное событие вечера ★</p>
+        <h2 id="t-contest" class="caps h2 gold-text" style="line-height: 1.4">Конкурс на лучший<br>кинообраз</h2><h3 class="caps" style="margin-top: 44px; font-size: 18px">Как будут отбирать победителя</h3><ol style="list-style: none; margin: 18px auto 0; padding: 0; max-width: 480px; display: flex; flex-direction: column; gap: 14px; text-align: left">
           <li class="body" style="display: flex; gap: 14px"><span class="caps" style="flex: 0 0 auto; width: 30px; font-size: 20px; color: rgb(107, 93, 79)">I</span><span><b style="font-weight: 600">Регистрация в день праздника.</b> Отсканируйте QR-код у входа в банкетный зал или у фотозоны и заполните форму: ФИО, фильм, имя героя.</span></li>
-          <li class="body" style="display: flex; gap: 14px"><span class="caps" style="flex: 0 0 auto; width: 30px; font-size: 20px; color: rgb(107, 93, 79)">II</span><span><b style="font-weight: 600">Цельный образ.</b> Одного-двух атрибутов мало; Например: Малефисенте нужны не только рога,<br>но и плащ, крылья, аксессуары. Героя должны узнать сразу.</span></li>
+          <li class="body" style="display: flex; gap: 14px"><span class="caps" style="flex: 0 0 auto; width: 30px; font-size: 20px; color: rgb(107, 93, 79)">II</span><span><b style="font-weight: 600">Цельный образ.</b> Одного-двух атрибутов мало. Например, Индиане Джонсу нужна не только шляпа, но и куртка, рубашка и сумка через плечо. Героя должны узнать сразу.</span></li>
           <li class="body" style="display: flex; gap: 14px"><span class="caps" style="flex: none; width: 30px; font-size: 20px; color: #6b5d4f">III</span><span><b style="font-weight: 600">Сцена и голосование.</b> Участники показывают костюм на сцене, лучших выбирают зрители.</span></li>
           <li class="body" style="display: flex; gap: 14px; max-width: 526px"><span class="caps" style="flex: 0 0 auto; width: 30px; font-size: 20px; color: rgb(107, 93, 79)">IV</span><span><b style="font-weight: 600">Три призёра.</b> За 1-е, 2-е и 3-е места - сертификаты Lime.</span></li>
         </ol>
-      </div><img loading="lazy" decoding="async" class="prizes-img" src="assets/img/prizes.webp" alt="Призы: подарочные сертификаты Lime за 1, 2 и 3 место" style="width: 100%; max-width: 597px; height: auto; aspect-ratio: 597 / 300; object-fit: cover">
+      </div><img loading="lazy" decoding="async" class="prizes-img" src="assets/img/prizes.webp" alt="Призы: подарочные сертификаты Lime за 1, 2 и 3 место" style="width: 100%; max-width: 597px; height: auto">
     </div>
-  </section><section id="booking" class="sec dk" aria-labelledby="t-book">
+  </section>
+
+  <section id="booking" class="sec dk" aria-labelledby="t-book">
     <div class="torn torn-dk" aria-hidden="true"></div>
     <img loading="lazy" decoding="async" src="assets/img/film-strip.webp" alt="" aria-hidden="true" style="position: absolute; right: -20px; top: 30px; width: 150px">
     <div class="wrap bk-cols">
       <div class="bk-side">
-        <p class="caps mutedd" style="font-size: 16px; letter-spacing: .3em">Регистрация до 01.12</p>
-        <p class="script" style="font-size: 96px; color: #E6D3AE; margin-top: 18px">До встречи</p>
+        <p class="caps mutedd" style="font-size: 16px; letter-spacing: .3em">Регистрация до 10.12</p>
+        <p class="script gold-text" style="font-size: 96px; color: #E6D3AE; margin-top: 18px">До встречи</p>
         <p class="caps" style="font-size: 30px; line-height: 1.45; letter-spacing: .12em; color: #EFE7DA; margin-top: 12px">на главной премьере<br>уходящего года!</p>
         <img loading="lazy" decoding="async" src="assets/img/film-strip.webp" alt="" aria-hidden="true" style="display: block; width: 240px; margin-top: 36px">
       </div>
@@ -218,45 +217,35 @@
           <form class="paper bk-form" data-dc-onsubmit="submit" novalidate style="position: relative; max-width: 460px; margin: 0 auto; color: #2E2721; border-radius: 230px 230px 18px 18px; padding: 80px 32px 38px; box-shadow: 0 20px 50px rgba(0,0,0,.5); display: flex; flex-direction: column; gap: 18px; outline: 1px solid rgba(46,39,33,.25); outline-offset: -10px">
             <div style="text-align: center">
               <h2 id="t-book" class="caps h2">Бронирование мест</h2>
-              <p class="body muted" style="font-style: italic; margin-top: 8px">Регистрация до 01.12</p>
+              <p class="body muted" style="font-style: italic; margin-top: 8px">Регистрация до 10.12</p>
             </div>
             <div class="fld">
-              <label for="v-fio">Фамилия, имя, отчество *</label>
+              <label for="v-fio">Фамилия и имя *</label>
               <input id="v-fio" type="text" autocomplete="name" value="{{form.fio}}" data-dc-onchange="onFio" aria-invalid="{{err.fioInvalid}}" aria-describedby="ve-fio" style="border-bottom-color: {{err.fioBorder}}">
               <sc-if value="{{err.fio}}" hint-placeholder-val="{{ false }}"><span id="ve-fio" class="err" role="alert">{{err.fio}}</span></sc-if>
             </div>
             <div class="fld">
-              <label for="v-film">Название фильма *</label>
-              <input id="v-film" type="text" value="{{form.film}}" data-dc-onchange="onFilm" aria-invalid="{{err.filmInvalid}}" aria-describedby="ve-film" style="border-bottom-color: {{err.filmBorder}}">
-              <sc-if value="{{err.film}}" hint-placeholder-val="{{ false }}"><span id="ve-film" class="err" role="alert">{{err.film}}</span></sc-if>
-            </div>
-            <div class="fld">
-              <label for="v-hero">Имя героя *</label>
-              <input id="v-hero" type="text" value="{{form.hero}}" data-dc-onchange="onHero" aria-invalid="{{err.heroInvalid}}" aria-describedby="ve-hero" style="border-bottom-color: {{err.heroBorder}}">
-              <sc-if value="{{err.hero}}" hint-placeholder-val="{{ false }}"><span id="ve-hero" class="err" role="alert">{{err.hero}}</span></sc-if>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 4px; text-align: left">
-              <div style="display: flex; gap: 12px; align-items: flex-start">
-                
-                
-              </div>
-              <sc-if value="{{err.agree}}" hint-placeholder-val="{{ false }}"><span id="ve-agree" class="err" role="alert">{{err.agree}}</span></sc-if>
+              <label for="v-dept">Департамент *</label>
+              <input id="v-dept" type="text" autocomplete="organization-title" value="{{form.dept}}" data-dc-onchange="onDept" aria-invalid="{{err.deptInvalid}}" aria-describedby="ve-dept" style="border-bottom-color: {{err.deptBorder}}">
+              <sc-if value="{{err.dept}}" hint-placeholder-val="{{ false }}"><span id="ve-dept" class="err" role="alert">{{err.dept}}</span></sc-if>
             </div>
             <button class="pill" type="submit" data-dc-bool-disabled="sending" style="margin-top: 8px; align-self: center">{{submitLabel}} <span aria-hidden="true">→</span></button>
           </form>
         </sc-if>
 
         <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
-          <div class="paper" role="status" style="position: relative; max-width: 460px; margin: 0 auto; color: #2E2721; border-radius: 6px; padding: 44px 30px 36px; box-shadow: 0 20px 50px rgba(0,0,0,.5); outline: 1px dashed rgba(46,39,33,.4); outline-offset: -12px; text-align: center">
+          <div class="paper ticket-print" role="status" style="position: relative; max-width: 460px; margin: 0 auto; color: #2E2721; border-radius: 6px; padding: 44px 30px 36px; box-shadow: 0 20px 50px rgba(0,0,0,.5); outline: 1px dashed rgba(46,39,33,.4); outline-offset: -12px; text-align: center">
             <img loading="lazy" decoding="async" src="assets/img/wax-seal.svg" alt="" aria-hidden="true" style="position: absolute; left: 50%; top: -34px; width: 72px; transform: translateX(-50%)">
             <p class="caps" style="font-size: 15px; color: #6b5d4f; letter-spacing: .3em">Admit one · Билет на премьеру</p>
             <p class="script" style="font-size: 44px; margin-top: 16px">Ваше место забронировано!</p>
             <p class="body" style="margin-top: 14px">До встречи 23 декабря</p>
             <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(46,39,33,.25); display: flex; flex-direction: column; gap: 2px">
               <span class="body" style="font-size: 17px">Гость: <b>{{guestName}}</b></span>
+              <span class="body" style="font-size: 17px">Департамент: {{guestDept}}</span>
               <span class="body muted" style="font-size: 17px">17:00 · Triumph Event Hall</span>
             </div>
           </div>
+          <div class="confetti" aria-hidden="true"><sc-for list="{{confetti}}" as="c" hint-placeholder-count="0"><i style="left: {{c.l}}; width: {{c.w}}; height: {{c.h}}; background: {{c.bg}}; animation-delay: {{c.d}}; animation-duration: {{c.u}}; --r: {{c.r}}"></i></sc-for></div>
         </sc-if>
       </div>
     </div>
@@ -265,7 +254,7 @@
   <!-- 7 · ОТСЧЁТ + ФИНАЛ -->
   <section class="sec cr" aria-label="До премьеры">
     <div class="torn torn-cr" aria-hidden="true"></div>
-    <div class="cd-arch" style="max-width: 560px; margin: 0 auto; border: 1px solid rgba(46,39,33,.3); border-bottom: 0; border-radius: 280px 280px 0 0; padding: 60px 16px 28px">
+    <div class="cd-arch bulbs" style="max-width: 560px; margin: 0 auto; border: 1px solid rgba(46,39,33,.3); border-bottom: 0; border-radius: 280px 280px 0 0; padding: 60px 16px 28px">
       <sc-if value="{{cd.running}}" hint-placeholder-val="{{ true }}">
         <h2 class="caps h2">Осталось</h2>
         <div class="cd" role="timer" aria-live="off" style="margin-top: 18px">
@@ -291,8 +280,6 @@
       <div class="credits">
         <span class="r">Представляет</span><span class="n">RESO-LEASING PICTURES</span>
         <span class="r">В главных ролях</span><span class="n">вся команда РЕСО-Лизинг</span>
-        <span class="r">Съёмочные площадки</span><span class="n">более 50 подразделений по всей стране</span>
-        <span class="r">Каскадёры</span><span class="n">отдел продаж</span>
         <span class="r">Хронометраж</span><span class="n">один незабываемый вечер</span>
         <span class="r">В прокате</span><span class="n">с 2003 года</span>
       </div>
@@ -301,7 +288,9 @@
     
     
   </footer>
-</main></div>
+</main>
+<sc-if value="{{boulder}}" hint-placeholder-val="{{ false }}"><div class="boulder" aria-hidden="true"></div></sc-if>
+</div>
 </template>
 <noscript><p style="color:#EFE7DA;text-align:center;padding:40px;font-family:Georgia,serif">Для просмотра приглашения включите JavaScript.</p></noscript>
 </body>
