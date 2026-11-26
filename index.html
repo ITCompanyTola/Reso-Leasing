@@ -3,39 +3,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Новогодняя вечеринка РЕСО-Лизинг — Вечер кинопремьер</title>
-<meta name="description" content="23 декабря 2026, 17:00 · Triumph Event Hall. Костюмированная кинопремьера РЕСО-Лизинг: красная дорожка, welcome-drink, фотосессия, конкурс на лучший кинообраз и танцы. Регистрация до 1 декабря.">
+<title>Новогодний вечер РЕСО-Лизинг — Вечер кинопремьер</title>
+<meta name="description" content="23 декабря 2026, 17:00 · Triumph Event Hall. Костюмированная кинопремьера РЕСО-Лизинг: красная дорожка, welcome-drink, фотосессия, конкурс на лучший кинообраз и танцы. Регистрация до 10 декабря.">
 <meta name="theme-color" content="#1B1714">
+<meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Новогодняя вечеринка РЕСО-Лизинг — Вечер кинопремьер">
-<meta property="og:description" content="23.12.2026 · 17:00. Костюмированная кинопремьера. Регистрация до 01.12.">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="РЕСО-Лизинг">
+<meta property="og:title" content="Новогодний вечер РЕСО-Лизинг — Вечер кинопремьер">
+<meta property="og:description" content="23.12.2026 · 17:00. Костюмированная кинопремьера. Регистрация до 10.12.">
+<!-- После подключения домена замените на абсолютный адрес: https://ВАШ-ДОМЕН/assets/img/og-image.jpg и добавьте og:url и canonical -->
 <meta property="og:image" content="assets/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="assets/img/favicon.png">
-<link rel="preload" as="image" href="assets/img/hero-scene.webp" fetchpriority="high">
+<link rel="apple-touch-icon" href="assets/img/favicon.png">
+<link rel="preload" as="image" href="assets/img/hero-scene.webp" imagesrcset="assets/img/hero-scene-1200.webp 1200w, assets/img/hero-scene-1800.webp 1800w, assets/img/hero-scene.webp 2400w" imagesizes="(max-width: 1023px) 900px, 108vw" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-garamond-cyrillic-400-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/marck-script-cyrillic-400-normal.woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css">
-<script defer src="assets/js/morphdom.min.js"></script>
-<script defer src="assets/js/runtime.js"></script>
-<script defer src="assets/js/app.js"></script>
+<link rel="stylesheet" href="assets/css/style.css?v=4894e383">
+<script defer src="assets/js/morphdom.min.js?v=6b42cf4c"></script>
+<script defer src="assets/js/runtime.js?v=b7d13a0d"></script>
+<script defer src="assets/js/config.js"></script>
+<script defer src="assets/js/app.js?v=c21d8783"></script>
+<style>.boot{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;box-sizing:border-box;text-align:center;color:#EFE7DA;font-family:"Cormorant Garamond",Georgia,serif;opacity:0;animation:boot-in .5s ease .8s forwards}.boot p{margin:0}.boot-k{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:#CFC3B1}.boot-t{font-size:clamp(30px,6vw,56px);letter-spacing:.08em;text-transform:uppercase;line-height:1.15}.boot-t span{display:block;color:#E9C979;text-transform:none;letter-spacing:.02em}@keyframes boot-in{to{opacity:1}}</style>
+<noscript><style>.boot{opacity:1;animation:none}</style></noscript>
 </head>
 <body>
-<div id="app"></div>
+<div id="app"><div class="boot"><p class="boot-k">23 · 12 · 2026 · 17:00 · Triumph Event Hall</p><p class="boot-t">Новогодний вечер<span>РЕСО-Лизинг</span></p><p class="boot-k">Вечер кинопремьер</p><noscript><p style="margin-top:18px;font-size:18px">Для просмотра приглашения включите JavaScript в браузере.</p></noscript></div></div>
 <template id="tpl"><div class="bg">
 
 <sc-if value="{{egg}}" hint-placeholder-val="{{ false }}">
-  <div class="eggfx">
+  <div class="eggfx" style="top: -5px">
     <sc-for list="{{eggFlakes}}" as="f" hint-placeholder-count="0"><img class="eggflake" src="assets/img/snowflake.png" alt="" style="left: {{f.l}}; width: {{f.s}}; opacity: {{f.o}}; animation-duration: {{f.d}}; animation-delay: {{f.dl}}"></sc-for>
+    <sc-if value="{{eggMsg}}" hint-placeholder-val="{{ true }}">
     <div class="eggmsg" role="status"><p class="script" style="font-size: 38px; color: #E6D3AE">С Новым годом,</p><p class="caps" style="font-size: 17px; margin-top: 6px; letter-spacing: .2em">команда РЕСО-Лизинг!</p></div>
+    </sc-if>
   </div>
 </sc-if>
-<div class="flashfx {{flash.cls}}" aria-hidden="true" style="left: {{flash.x}}; top: {{flash.y}}"></div><main class="sheet" id="top">
+<div class="flashfx {{flash.cls}}" aria-hidden="true" style="left: {{flash.x}}; top: {{flash.y}}"></div>
+<sc-if value="{{boulder}}" hint-placeholder-val="{{ false }}"><div class="boulder" aria-hidden="true"></div></sc-if><main class="sheet" id="top">
 
   <!-- 1 · ТИТУЛ -->
   <section class="sec dk hero" aria-labelledby="t-title" style="padding-top: 56px; padding-bottom: 92px">
     <div class="scene-box">
       <div class="stage" style="{{stageStyle}}">
-        <img class="hero-bg" src="assets/img/hero-scene.webp" alt="">
+        <img class="hero-bg" src="assets/img/hero-scene.webp" srcset="assets/img/hero-scene-1200.webp 1200w, assets/img/hero-scene-1800.webp 1800w, assets/img/hero-scene.webp 2400w" sizes="(max-width: 1023px) 900px, 108vw" alt="" fetchpriority="high">
         <div class="bdoor {{doorCls}}"><img class="bd-in" src="assets/img/door-lobby.webp" alt=""><img class="bd-l" src="assets/img/door-left.webp" alt=""><img class="bd-r" src="assets/img/door-right.webp" alt=""></div><div class="bdoor-glow {{doorCls}}"></div><button type="button" class="door-hit" data-dc-onclick="doorClick" aria-label="Открыть двери кинотеатра"></button><sc-if value="{{doorBurst}}" hint-placeholder-val="{{ false }}"><span class="door-burst" aria-hidden="true"><sc-for list="{{burst}}" as="b" hint-placeholder-count="0"><i style="--dx: {{b.x}}; --dy: {{b.y}}; --r: {{b.r}}; background: {{b.bg}}; width: {{b.w}}; height: {{b.h}}; animation-delay: {{b.d}}"></i></sc-for></span></sc-if><div class="sign-glow"></div><button type="button" class="neon {{neon.cls}}" data-dc-onclick="neonClick" aria-label="Неоновая вывеска «Премьера»"><sc-if value="{{neon.ny}}" hint-placeholder-val="{{ false }}">С Новым годом!</sc-if><sc-if value="{{neon.std}}" hint-placeholder-val="{{ true }}">Прем<span class="nf">ь</span>ера</sc-if><sc-if value="{{neon.sparks}}" hint-placeholder-val="{{ false }}"><span class="sparks" aria-hidden="true"><sc-for list="{{sparks}}" as="k" hint-placeholder-count="0"><i style="--dx: {{k.x}}; --dy: {{k.y}}; animation-delay: {{k.d}}"></i></sc-for></span></sc-if></button>
         <span class="tw" style="left: 58.96%; top: 9.82%; animation-delay: -0.00s"></span>
         <span class="tw" style="left: 61.25%; top: 10.36%; animation-delay: -0.37s"></span>
@@ -88,7 +102,7 @@
         <p class="caps mutedd" style="font-size: 16px; letter-spacing: .34em">23 · 12 · 2026</p>
         <p class="caps mutedd" style="font-size: 15px; letter-spacing: .26em; margin-top: 22px">RESO-LEASING PICTURES PRESENTS</p>
         <h1 id="t-title" style="margin: 20px 0 0; font-weight: 400">
-          <span class="caps" style="display: block; font-size: clamp(34px, 4.4vw, 66px); line-height: 1.08; letter-spacing: .08em; color: #EFE7DA">Новогодняя вечеринка</span>
+          <span class="caps" style="display: block; font-size: clamp(34px, 4.4vw, 66px); line-height: 1.08; letter-spacing: .08em; color: #EFE7DA">Новогодний вечер</span>
           <span class="script gold-text" style="display: block; font-size: clamp(54px, 8vw, 124px); color: #E6D3AE; margin-top: 4px">РЕСО-Лизинг</span>
         </h1>
         <p class="body mutedd" style="font-style: italic; margin-top: 10px">Вечер кинопремьер</p>
@@ -96,7 +110,7 @@
           <span style="flex: none; width: 64px; height: 64px; border-radius: 50%; border: 1.5px solid currentColor; display: flex; align-items: center; justify-content: center">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>
           </span>
-          <span class="caps" style="font-size: 15px; line-height: 1.4">Забронировать<br>место</span>
+          <span class="caps" style="font-size: 15px; line-height: 1.4">Регистрация<br>на мероприятие</span>
         </a>
       </div>
     </div>
@@ -115,8 +129,10 @@
           <li class="body"><span class="caps" style="font-size: 15px; display: block; color: #6b5d4f">В главных ролях</span>Ты и твои коллеги</li>
           <li class="body"><span class="caps" style="font-size: 15px; display: block; color: #6b5d4f">Спецэффекты</span>Красная дорожка, фуршет, фотосессия, ведущий, кавер-группа и танцы</li>
         </ul>
-        <p class="caps" style="margin-top: 34px; font-size: clamp(34px, 3.4vw, 48px); letter-spacing: .14em; font-weight: 500">23.12.2026</p>
-        <p class="body muted" style="font-style: italic">17:00, сбор гостей</p>
+        <div class="date-ticket">
+          <p class="dt-main"><span class="dt-label">Дата премьеры</span><span class="dt-date gold-text">23.12.2026</span></p>
+          <p class="dt-stub"><span class="dt-label">Сбор гостей</span><span class="dt-time">17:00</span></p>
+        </div>
       </div>
 
       <div class="prog">
@@ -155,7 +171,7 @@
           <h2 id="t-place" class="caps h2" style="color: #EFE7DA">Место</h2>
           <p class="body" style="margin-top: 16px; font-size: 24px">Triumph Event Hall</p>
           <p class="body mutedd">г. Москва, ул. Неверовского, д. 15<br>(м. Парк Победы)</p>
-          <a href="https://yandex.ru/maps/?text=%D0%B3.%20%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D1%83%D0%BB.%20%D0%9D%D0%B5%D0%B2%D0%B5%D1%80%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE%2C%20%D0%B4.%2015%20%28%D0%BC.%20%D0%9F%D0%B0%D1%80%D0%BA%20%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B%29" target="_blank" rel="noopener" aria-label="Открыть на Яндекс Картах: г. Москва, ул. Неверовского, д. 15 (м. Парк Победы)" style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 124px; height: 124px; box-sizing: border-box; padding-top: 6px; border-radius: 50%; margin-top: 26px; background: #EFE7DA; color: #1B1714; text-decoration: none; box-shadow: 0 0 0 6px rgba(239,231,218,.12)">
+          <a href="https://yandex.ru/maps/?text=%D0%B3.%20%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D1%83%D0%BB.%20%D0%9D%D0%B5%D0%B2%D0%B5%D1%80%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE%2C%20%D0%B4.%2015%20%28%D0%BC.%20%D0%9F%D0%B0%D1%80%D0%BA%20%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B%29" target="_blank" rel="noopener" aria-label="Посмотреть карту: г. Москва, ул. Неверовского, д. 15 (м. Парк Победы) (Яндекс Карты, новая вкладка)" style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 124px; height: 124px; box-sizing: border-box; padding-top: 6px; border-radius: 50%; margin-top: 26px; background: #EFE7DA; color: #1B1714; text-decoration: none; box-shadow: 0 0 0 6px rgba(239,231,218,.12)">
             <span class="caps" style="display: block; font-size: 13px; line-height: 1.2; letter-spacing: .06em">Посмотреть<br>карту</span>
             <span aria-hidden="true" style="display: block; font-size: 18px; line-height: 1">→</span>
           </a>
@@ -182,7 +198,7 @@
   <!-- 5 · КОНКУРС -->
   
 
-  <!-- 6 · БРОНИРОВАНИЕ -->
+  <!-- 6 · РЕГИСТРАЦИЯ НА МЕРОПРИЯТИЕ -->
   <section id="contest" class="sec velvet" aria-labelledby="t-contest">
     <div class="torn torn-velvet" aria-hidden="true"></div>
     <div class="wrap contest-cols marquee" style="max-width: 1000px">
@@ -194,7 +210,7 @@
         <p class="star-badge">★ Главное событие вечера ★</p>
         <h2 id="t-contest" class="caps h2 gold-text" style="line-height: 1.4">Конкурс на лучший<br>кинообраз</h2><h3 class="caps" style="margin-top: 44px; font-size: 18px">Как будут отбирать победителя</h3><ol style="list-style: none; margin: 18px auto 0; padding: 0; max-width: 480px; display: flex; flex-direction: column; gap: 14px; text-align: left">
           <li class="body" style="display: flex; gap: 14px"><span class="caps" style="flex: 0 0 auto; width: 30px; font-size: 20px; color: rgb(107, 93, 79)">I</span><span><b style="font-weight: 600">Регистрация в день праздника.</b> Отсканируйте QR-код у входа в банкетный зал или у фотозоны и заполните форму: ФИО, фильм, имя героя.</span></li>
-          <li class="body" style="display: flex; gap: 14px"><span class="caps" style="flex: 0 0 auto; width: 30px; font-size: 20px; color: rgb(107, 93, 79)">II</span><span><b style="font-weight: 600">Цельный образ.</b> Одного-двух атрибутов мало. Например, Индиане Джонсу нужна не только шляпа, но и куртка, рубашка и сумка через плечо. Героя должны узнать сразу.</span></li>
+          <li class="body" style="display: flex; gap: 14px"><span class="caps" style="flex: 0 0 auto; width: 30px; font-size: 20px; color: rgb(107, 93, 79)">II</span><span><b style="font-weight: 600">Узнаваемый герой.</b> Выберите узнаваемого киногероя и соберите образ из вещей гардероба или нескольких выразительных деталей. Можно пойти дальше и перевоплотиться полностью.</span></li>
           <li class="body" style="display: flex; gap: 14px"><span class="caps" style="flex: none; width: 30px; font-size: 20px; color: #6b5d4f">III</span><span><b style="font-weight: 600">Сцена и голосование.</b> Участники показывают костюм на сцене, лучших выбирают зрители.</span></li>
           <li class="body" style="display: flex; gap: 14px; max-width: 526px"><span class="caps" style="flex: 0 0 auto; width: 30px; font-size: 20px; color: rgb(107, 93, 79)">IV</span><span><b style="font-weight: 600">Три призёра.</b> За 1-е, 2-е и 3-е места - сертификаты Lime.</span></li>
         </ol>
@@ -216,20 +232,21 @@
         <sc-if value="{{showForm}}" hint-placeholder-val="{{ true }}">
           <form class="paper bk-form" data-dc-onsubmit="submit" novalidate style="position: relative; max-width: 460px; margin: 0 auto; color: #2E2721; border-radius: 230px 230px 18px 18px; padding: 80px 32px 38px; box-shadow: 0 20px 50px rgba(0,0,0,.5); display: flex; flex-direction: column; gap: 18px; outline: 1px solid rgba(46,39,33,.25); outline-offset: -10px">
             <div style="text-align: center">
-              <h2 id="t-book" class="caps h2">Бронирование мест</h2>
+              <h2 id="t-book" class="caps h2">Регистрация на мероприятие</h2>
               <p class="body muted" style="font-style: italic; margin-top: 8px">Регистрация до 10.12</p>
             </div>
             <div class="fld">
               <label for="v-fio">Фамилия и имя *</label>
-              <input id="v-fio" type="text" autocomplete="name" value="{{form.fio}}" data-dc-onchange="onFio" aria-invalid="{{err.fioInvalid}}" aria-describedby="ve-fio" style="border-bottom-color: {{err.fioBorder}}">
+              <input id="v-fio" type="text" autocomplete="name" value="{{form.fio}}" data-dc-onchange="onFio" aria-invalid="{{err.fioInvalid}}" aria-required="true" aria-describedby="{{err.fioDesc}}" style="border-bottom-color: {{err.fioBorder}}">
               <sc-if value="{{err.fio}}" hint-placeholder-val="{{ false }}"><span id="ve-fio" class="err" role="alert">{{err.fio}}</span></sc-if>
             </div>
             <div class="fld">
               <label for="v-dept">Департамент *</label>
-              <input id="v-dept" type="text" autocomplete="organization-title" value="{{form.dept}}" data-dc-onchange="onDept" aria-invalid="{{err.deptInvalid}}" aria-describedby="ve-dept" style="border-bottom-color: {{err.deptBorder}}">
+              <input id="v-dept" type="text" autocomplete="organization-title" value="{{form.dept}}" data-dc-onchange="onDept" aria-invalid="{{err.deptInvalid}}" aria-required="true" aria-describedby="{{err.deptDesc}}" style="border-bottom-color: {{err.deptBorder}}">
               <sc-if value="{{err.dept}}" hint-placeholder-val="{{ false }}"><span id="ve-dept" class="err" role="alert">{{err.dept}}</span></sc-if>
             </div>
-            <button class="pill" type="submit" data-dc-bool-disabled="sending" style="margin-top: 8px; align-self: center">{{submitLabel}} <span aria-hidden="true">→</span></button>
+            <button class="pill" type="submit" data-dc-bool-disabled="sending" style="margin-top: 8px; align-self: center"><span class="pill-txt"><sc-if value="{{sending}}" hint-placeholder-val="{{ false }}">Регистрируем…</sc-if><sc-if value="{{idle}}" hint-placeholder-val="{{ true }}">Регистрация <span class="pill-l2">на мероприятие</span></sc-if></span> <span aria-hidden="true">→</span></button>
+            <sc-if value="{{sendErr}}" hint-placeholder-val="{{ false }}"><p class="send-err" role="alert">{{sendErr}}</p></sc-if>
           </form>
         </sc-if>
 
@@ -237,7 +254,7 @@
           <div class="paper ticket-print" role="status" style="position: relative; max-width: 460px; margin: 0 auto; color: #2E2721; border-radius: 6px; padding: 44px 30px 36px; box-shadow: 0 20px 50px rgba(0,0,0,.5); outline: 1px dashed rgba(46,39,33,.4); outline-offset: -12px; text-align: center">
             <img loading="lazy" decoding="async" src="assets/img/wax-seal.svg" alt="" aria-hidden="true" style="position: absolute; left: 50%; top: -34px; width: 72px; transform: translateX(-50%)">
             <p class="caps" style="font-size: 15px; color: #6b5d4f; letter-spacing: .3em">Admit one · Билет на премьеру</p>
-            <p class="script" style="font-size: 44px; margin-top: 16px">Ваше место забронировано!</p>
+            <p class="script" style="font-size: 44px; margin-top: 16px">Вы зарегистрированы!</p>
             <p class="body" style="margin-top: 14px">До встречи 23 декабря</p>
             <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(46,39,33,.25); display: flex; flex-direction: column; gap: 2px">
               <span class="body" style="font-size: 17px">Гость: <b>{{guestName}}</b></span>
@@ -289,9 +306,7 @@
     
   </footer>
 </main>
-<sc-if value="{{boulder}}" hint-placeholder-val="{{ false }}"><div class="boulder" aria-hidden="true"></div></sc-if>
 </div>
 </template>
-<noscript><p style="color:#EFE7DA;text-align:center;padding:40px;font-family:Georgia,serif">Для просмотра приглашения включите JavaScript.</p></noscript>
 </body>
 </html>
