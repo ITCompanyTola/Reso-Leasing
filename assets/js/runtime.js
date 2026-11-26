@@ -74,7 +74,7 @@
       var next = root.cloneNode(false);
       build(tpl.content, next, vals);
       if (root.__mounted) morphdom(root, next, { childrenOnly: true });
-      else { while (next.firstChild) root.appendChild(next.firstChild); root.__mounted = true; }
+      else { root.textContent = ''; while (next.firstChild) root.appendChild(next.firstChild); root.__mounted = true; } // first render replaces the loading splash
     }
     comp.__render = render;
     function fire(attr, e) {

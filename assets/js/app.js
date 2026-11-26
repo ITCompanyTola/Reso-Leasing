@@ -42,7 +42,9 @@ class Component extends DCLogic {
       const ar = 2400 / 1400, narrow = window.innerWidth <= 1023;
       // cover: the picture fills the hero; crop mostly from the left / sky so the entrance stays in frame
       let sw, sh; if (w / h > ar) { sw = w; sh = w / ar; } else { sh = h; sw = h * ar; }
-      const px = narrow ? 0.774 : 0.75, py = narrow ? 0.5 : 0.3;
+      const px = narrow ? 0.774 : 0.75;
+      let py = narrow ? 0.5 : 0.3;
+      if (!narrow && sh > h) py = Math.min(0.85, Math.max(py, (0.82 * sh - h + 48) / (sh - h)));
       const st = { w: Math.round(sw), h: Math.round(sh), l: Math.round((w - sw) * px), t: Math.round((h - sh) * py) };
       // the car's path is measured from the window: it enters fully past the right edge and leaves fully past the left
       const carW = 0.7346 * st.w, cin = w - st.l + 40, cout = -(st.l + carW) - 40;
@@ -56,16 +58,32 @@ class Component extends DCLogic {
       if (!o || o.w !== st.w || o.h !== st.h || o.l !== st.l || o.t !== st.t || o.frame !== st.frame || o.car !== st.car) this.setState({ stage: st });
     };
     this.measure();
-    // film-leader countdown "3-2-1" the first time the "about" section scrolls into view
-    const about = document.getElementById('about');
-    if (about && window.IntersectionObserver) {
-      this.io = new IntersectionObserver((ents) => {
+    // Scroll-triggered surprises. If the whole page already fits in the window (the design canvas,
+    // or a very tall screen), nothing ever scrolls into view, so they start when the pointer reaches the block.
+    this.unseen = [];
+    const whenSeen = (el, threshold, fn) => {
+      if (!el) return;
+      const fits = window.innerHeight >= document.documentElement.scrollHeight - 40;
+      if (fits || !window.IntersectionObserver) {
+        const go = () => { el.removeEventListener('pointerenter', go); fn(); };
+        el.addEventListener('pointerenter', go);
+        this.unseen.push(() => el.removeEventListener('pointerenter', go));
+        return;
+      }
+      const io = new IntersectionObserver((ents) => {
         if (!ents.some((e) => e.isIntersecting)) return;
-        this.io.disconnect(); this.setState({ leader: true });
-        this.leaderTimer = setTimeout(() => this.setState({ leader: false }), 2100);
-      }, { threshold: 0.35 });
-      this.io.observe(about);
-    }
+        io.disconnect(); fn();
+      }, { threshold });
+      io.observe(el);
+      this.unseen.push(() => io.disconnect());
+    };
+    // film-leader countdown "3-2-1" the first time the "about" section is seen
+    whenSeen(document.getElementById('about'), 0.35, () => {
+      this.setState({ leader: true });
+      this.leaderTimer = setTimeout(() => this.setState({ leader: false }), 2100);
+    });
+    // the RESO snowflake surprise plays by itself the first time the footer is seen (the button still works)
+    whenSeen(document.querySelector('footer'), 0.15, () => this.playEgg(false));
     // paparazzi flashes while scrolling (not more often than every ~2.8 s)
     this.lastFlash = 0;
     this.onScroll = () => {
@@ -85,13 +103,30 @@ class Component extends DCLogic {
     if (window.ResizeObserver && this.heroEl) { this.ro = new ResizeObserver(() => this.measure()); this.ro.observe(this.heroEl); }
     window.addEventListener('resize', this.measure);
   }
-  componentWillUnmount() { clearInterval(this.timer); clearTimeout(this.eggTimer); clearTimeout(this.lookTimer); (this.neonTimers || []).forEach(clearTimeout); clearTimeout(this.doorTimer); clearTimeout(this.leaderTimer); if (this.io) this.io.disconnect(); window.removeEventListener('scroll', this.onScroll); if (this.onMove) window.removeEventListener('mousemove', this.onMove); if (this.ro) this.ro.disconnect(); window.removeEventListener('resize', this.measure); }
+  componentWillUnmount() { clearInterval(this.timer); clearTimeout(this.eggTimer); clearTimeout(this.lookTimer); (this.neonTimers || []).forEach(clearTimeout); clearTimeout(this.doorTimer); clearTimeout(this.leaderTimer); (this.unseen || []).forEach((off) => off()); window.removeEventListener('scroll', this.onScroll); if (this.onMove) window.removeEventListener('mousemove', this.onMove); if (this.ro) this.ro.disconnect(); window.removeEventListener('resize', this.measure); }
 
   // ===== ПОДКЛЮЧЕНИЕ БЭКЕНДА =====
   // Заглушка: имитирует успешную отправку. Здесь подключается Google Sheets / Telegram / CRM / почта:
   //   return fetch('https://ВАШ-ЭНДПОИНТ', { method: 'POST', headers: { 'Content-Type': 'application/json' },
   //     body: JSON.stringify(data) }).then(r => { if (!r.ok) throw new Error(); });
-  sendRegistration(data) { return new Promise((resolve) => setTimeout(resolve, 900)); }
+  sendRegistration(data) {
+    const cfg = window.RESO_CONFIG || {}, url = String(cfg.endpoint || '').trim();
+    const fail = (code, msg) => Object.assign(new Error(msg || code), { code });
+    if (!url) return Promise.reject(fail('config'));
+    if (navigator.onLine === false) return Promise.reject(fail('offline'));
+    const ctl = window.AbortController ? new AbortController() : null;
+    const tm = setTimeout(() => { if (ctl) ctl.abort(); }, cfg.timeoutMs || 15000);
+    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data), signal: ctl ? ctl.signal : undefined })
+      .then((r) => { clearTimeout(tm); if (!r.ok) throw fail('server', 'HTTP ' + r.status); },
+        (e) => { clearTimeout(tm); throw fail(navigator.onLine === false ? 'offline' : (e && e.name === 'AbortError' ? 'timeout' : 'network'), String(e)); });
+  }
+  sendError(e) {
+    const c = e && e.code;
+    if (c === 'config') return 'Регистрация пока недоступна: форма не подключена к обработчику заявок. Пожалуйста, сообщите организаторам.';
+    if (c === 'offline') return 'Нет подключения к интернету. Данные сохранены — проверьте сеть и отправьте ещё раз.';
+    if (c === 'timeout') return 'Сервер не ответил вовремя. Данные сохранены — попробуйте отправить ещё раз.';
+    return 'Не удалось отправить заявку. Данные сохранены — попробуйте ещё раз через минуту.';
+  }
 
   validate(f) {
     const e = {};
@@ -114,13 +149,18 @@ class Component extends DCLogic {
       });
     } catch (e) { /* sound is optional */ }
   }
+  // snowfall; the greeting is shown only when the snowflake button is clicked
+  playEgg(withMsg) {
+    clearTimeout(this.eggTimer);
+    this.setState({ egg: false, eggMsg: !!withMsg }, () => { this.setState({ egg: true }); this.eggTimer = setTimeout(() => this.setState({ egg: false }), 8000); });
+  }
   // easter eggs on the look cards: one surprise at a time
   playLook(name, ms) {
     if (this.state.look) return;
     this.setState({ look: name });
     this.lookTimer = setTimeout(() => this.setState({ look: '' }), ms);
   }
-  setField(k, v) { this.setState({ form: Object.assign({}, this.state.form, { [k]: v }) }); }
+  setField(k, v) { this.setState({ form: Object.assign({}, this.state.form, { [k]: v }), sendErr: '' }); }
   plural(n, f) { const a = n % 100, b = n % 10; if (a > 10 && a < 20) return f[2]; if (b === 1) return f[0]; if (b > 1 && b < 5) return f[1]; return f[2]; }
 
   renderVals() {
@@ -138,7 +178,8 @@ class Component extends DCLogic {
     const err = {
       fio: errs.fio || '', dept: errs.dept || '',
       fioInvalid: errs.fio ? 'true' : 'false', deptInvalid: errs.dept ? 'true' : 'false',
-      fioBorder: errs.fio ? bad : base, deptBorder: errs.dept ? bad : base
+      fioBorder: errs.fio ? bad : base, deptBorder: errs.dept ? bad : base,
+      fioDesc: errs.fio ? 've-fio' : null, deptDesc: errs.dept ? 've-dept' : null
     };
     return {
       cd, err, form, done, showForm: !done, sending: s.sending,
@@ -174,9 +215,11 @@ class Component extends DCLogic {
       },
       frameStyle: s.stage ? s.stage.frame : '',
       carStyle: s.stage ? s.stage.car : '',
-      stageStyle: s.stage ? `left: ${s.stage.l}px; top: ${s.stage.t}px; width: ${s.stage.w}px; height: ${s.stage.h}px` : 'left: 0px; top: 0px; width: 100%; height: 100%',
-      eggOn: () => { clearTimeout(this.eggTimer); this.setState({ egg: false }, () => { this.setState({ egg: true }); this.eggTimer = setTimeout(() => this.setState({ egg: false }), 8000); }); },
-      submitLabel: s.sending ? 'Бронируем…' : 'Забронировать место',
+      stageStyle: s.stage ? `left: ${s.stage.l}px; top: ${s.stage.t}px; width: ${s.stage.w}px; height: ${s.stage.h}px; --sw: ${s.stage.w}px` : 'left: 0px; top: 0px; width: 100%; height: 100%',
+      eggOn: () => this.playEgg(true),
+      eggMsg: !!s.eggMsg,
+      idle: !s.sending,
+      sendErr: s.sendErr || '',
       guestName: form.fio.trim().replace(/\s+/g, ' '),
       guestDept: form.dept.trim(),
       onFio: (e) => this.setField('fio', e.target.value),
@@ -185,10 +228,11 @@ class Component extends DCLogic {
         if (e && e.preventDefault) e.preventDefault();
         if (this.state.sending || demo !== 'live') return;
         const f = this.state.form;
-        if (Object.keys(this.validate(f)).length) { this.setState({ tried: true }); return; }
-        this.setState({ tried: true, sending: true });
+        const bad = this.validate(f);
+        if (Object.keys(bad).length) { this.setState({ tried: true, sendErr: '' }); const el = document.getElementById(bad.fio ? 'v-fio' : 'v-dept'); if (el) el.focus(); return; }
+        this.setState({ tried: true, sending: true, sendErr: '' });
         this.sendRegistration({ fullName: f.fio.trim().replace(/\s+/g, ' '), department: f.dept.trim(), createdAt: new Date().toISOString() })
-          .then(() => this.setState({ sending: false, done: true })).catch(() => this.setState({ sending: false }));
+          .then(() => this.setState({ sending: false, done: true }), (er) => this.setState({ sending: false, sendErr: this.sendError(er) }));
       }
     };
   }
