@@ -22,11 +22,11 @@
 <link rel="preload" as="image" href="assets/img/hero-scene.webp" imagesrcset="assets/img/hero-scene-1200.webp 1200w, assets/img/hero-scene-1800.webp 1800w, assets/img/hero-scene.webp 2400w" imagesizes="(max-width: 1023px) 900px, 108vw" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-garamond-cyrillic-400-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/marck-script-cyrillic-400-normal.woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=041e382b">
+<link rel="stylesheet" href="assets/css/style.css?v=23930bc5">
 <script defer src="assets/js/morphdom.min.js?v=6b42cf4c"></script>
 <script defer src="assets/js/runtime.js?v=b7d13a0d"></script>
 <script defer src="assets/js/config.js"></script>
-<script defer src="assets/js/app.js?v=c21d8783"></script>
+<script defer src="assets/js/app.js?v=29335a1f"></script>
 <style>.boot{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;box-sizing:border-box;text-align:center;color:#EFE7DA;font-family:"Cormorant Garamond",Georgia,serif;opacity:0;animation:boot-in .5s ease .8s forwards}.boot p{margin:0}.boot-k{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:#CFC3B1}.boot-t{font-size:clamp(30px,6vw,56px);letter-spacing:.08em;text-transform:uppercase;line-height:1.15}.boot-t span{display:block;color:#E9C979;text-transform:none;letter-spacing:.02em}@keyframes boot-in{to{opacity:1}}</style>
 <noscript><style>.boot{opacity:1;animation:none}</style></noscript>
 </head>
@@ -65,10 +65,10 @@
         <span class="tw" style="left: 91.04%; top: 9.82%; animation-delay: -0.47s"></span>
         <sc-if value="{{ready}}" hint-placeholder-val="{{ false }}">
           <img class="spill" src="assets/img/car-light-spill.webp" alt="">
-          <div class="char c1"><img src="assets/img/guest-queen.webp" alt=""></div>
-          <div class="char c2"><img src="assets/img/guest-agent.webp" alt=""></div>
-          <div class="char c3"><img src="assets/img/guest-sorceress.webp" alt=""></div>
-          <div class="char c4"><img src="assets/img/guest-heroine.webp" alt=""></div>
+          <div class="char c1"><img src="assets/img/guest-gent-white.webp" alt=""></div>
+          <div class="char c2"><img src="assets/img/guest-lady-red.webp" alt=""></div>
+          <div class="char c3"><img src="assets/img/guest-lady-gold.webp" alt=""></div>
+          <div class="char c4"><img src="assets/img/guest-gent-tails.webp" alt=""></div>
           <span class="flash" style="left: 55.32%; top: 43.27%; animation-delay: 6.3s"></span>
           <span class="flash" style="left: 71.15%; top: 43.27%; animation-delay: 7.1s"></span>
           <span class="flash" style="left: 59.69%; top: 41.11%; animation-delay: 8.0s"></span>
@@ -243,7 +243,22 @@
             </div>
             <div class="fld">
               <label for="v-dept">Департамент *</label>
-              <input id="v-dept" type="text" autocomplete="organization-title" value="{{form.dept}}" data-dc-onchange="onDept" aria-invalid="{{err.deptInvalid}}" aria-required="true" aria-describedby="{{err.deptDesc}}" style="border-bottom-color: {{err.deptBorder}}">
+              <select id="v-dept" data-dc-onchange="onDept" data-empty="{{deptEmpty}}" aria-invalid="{{err.deptInvalid}}" aria-required="true" aria-describedby="{{err.deptDesc}}" style="border-bottom-color: {{err.deptBorder}}">
+                <option value="" disabled data-dc-bool-selected="dsel.none">Выберите департамент</option>
+                <option value="Департамент по работе с персоналом" data-dc-bool-selected="dsel.d0">Департамент по работе с персоналом</option>
+                <option value="Департамент развития бизнеса" data-dc-bool-selected="dsel.d1">Департамент развития бизнеса</option>
+                <option value="Коммерческий департамент" data-dc-bool-selected="dsel.d2">Коммерческий департамент</option>
+                <option value="Департамент по работе с клиентами" data-dc-bool-selected="dsel.d3">Департамент по работе с клиентами</option>
+                <option value="Юридический департамент" data-dc-bool-selected="dsel.d4">Юридический департамент</option>
+                <option value="Департамент информационных технологий" data-dc-bool-selected="dsel.d5">Департамент информационных технологий</option>
+                <option value="Финансовый департамент" data-dc-bool-selected="dsel.d6">Финансовый департамент</option>
+                <option value="Департамент рисков" data-dc-bool-selected="dsel.d7">Департамент рисков</option>
+                <option value="Селект-Финанс" data-dc-bool-selected="dsel.d8">Селект-Финанс</option>
+                <option value="Департамент комплаенс" data-dc-bool-selected="dsel.d9">Департамент комплаенс</option>
+                <option value="Департамент экономической безопасности" data-dc-bool-selected="dsel.d10">Департамент экономической безопасности</option>
+                <option value="Департамент изъятого имущества" data-dc-bool-selected="dsel.d11">Департамент изъятого имущества</option>
+                <option value="Авторелиз" data-dc-bool-selected="dsel.d12">Авторелиз</option>
+              </select>
               <sc-if value="{{err.dept}}" hint-placeholder-val="{{ false }}"><span id="ve-dept" class="err" role="alert">{{err.dept}}</span></sc-if>
             </div>
             <button class="pill" type="submit" data-dc-bool-disabled="sending" style="margin-top: 8px; align-self: center"><span class="pill-txt"><sc-if value="{{sending}}" hint-placeholder-val="{{ false }}">Регистрируем…</sc-if><sc-if value="{{idle}}" hint-placeholder-val="{{ true }}">Регистрация <span class="pill-l2">на мероприятие</span></sc-if></span> <span aria-hidden="true">→</span></button>

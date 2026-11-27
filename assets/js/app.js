@@ -128,13 +128,18 @@ class Component extends DCLogic {
     return 'Не удалось отправить заявку. Данные сохранены — попробуйте ещё раз через минуту.';
   }
 
+  deptSel(v) {
+    const o = { none: !v };
+    ["Департамент по работе с персоналом", "Департамент развития бизнеса", "Коммерческий департамент", "Департамент по работе с клиентами", "Юридический департамент", "Департамент информационных технологий", "Финансовый департамент", "Департамент рисков", "Селект-Финанс", "Департамент комплаенс", "Департамент экономической безопасности", "Департамент изъятого имущества", "Авторелиз"].forEach((d, i) => { o['d' + i] = d === v; });
+    return o;
+  }
   validate(f) {
     const e = {};
     const name = f.fio.trim().split(/\s+/).filter(Boolean);
     if (!name.length) e.fio = 'Укажите фамилию и имя';
     else if (name.length < 2) e.fio = 'Укажите и фамилию, и имя';
     else if (!/^[A-Za-zА-Яа-яЁё' -]+$/.test(f.fio.trim())) e.fio = 'Только буквы, без цифр и символов';
-    if (!f.dept.trim()) e.dept = 'Укажите департамент';
+    if (!f.dept.trim()) e.dept = 'Выберите департамент';
     return e;
   }
   // soft "ding" made with Web Audio (no sound file), only after a click
@@ -173,7 +178,7 @@ class Component extends DCLogic {
 
     let form = s.form, tried = s.tried, done = s.done;
     if (demo === 'error') { form = { fio: 'Смирнова', dept: '' }; tried = true; done = false; }
-    if (demo === 'success') { form = { fio: 'Смирнова Анна', dept: 'Департамент продаж' }; done = true; }
+    if (demo === 'success') { form = { fio: 'Смирнова Анна', dept: 'Коммерческий департамент' }; done = true; }
     const errs = tried ? this.validate(form) : {}, bad = '#9B2C22', base = '#8a7a66';
     const err = {
       fio: errs.fio || '', dept: errs.dept || '',
@@ -224,6 +229,8 @@ class Component extends DCLogic {
       guestDept: form.dept.trim(),
       onFio: (e) => this.setField('fio', e.target.value),
       onDept: (e) => this.setField('dept', e.target.value),
+      deptEmpty: form.dept ? 'false' : 'true',
+      dsel: this.deptSel(form.dept),
       submit: (e) => {
         if (e && e.preventDefault) e.preventDefault();
         if (this.state.sending || demo !== 'live') return;
