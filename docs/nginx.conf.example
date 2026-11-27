@@ -1,0 +1,32 @@
+# Пример для nginx. Замените ВАШ-ДОМЕН и путь к папке site.
+server {
+    listen 80;
+    server_name ВАШ-ДОМЕН www.ВАШ-ДОМЕН;
+    return 301 https://ВАШ-ДОМЕН$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name ВАШ-ДОМЕН;
+    # ssl_certificate     /etc/letsencrypt/live/ВАШ-ДОМЕН/fullchain.pem;
+    # ssl_certificate_key /etc/letsencrypt/live/ВАШ-ДОМЕН/privkey.pem;
+
+    root /var/www/reso-leasing-party/site;
+    index index.html;
+    charset utf-8;
+
+    gzip on;
+    gzip_types text/css application/javascript image/svg+xml application/json text/plain;
+
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+
+    location = /index.html            { add_header Cache-Control "no-cache"; }
+    location = /assets/js/config.js   { add_header Cache-Control "no-cache"; }
+    location ~* \.(css|js)$           { expires 1y; }     # подключены с ?v=<хеш>
+    location ~* \.(webp|png|jpg|svg)$ { expires 30d; }
+    location ~* \.woff2$              { expires 1y; }
+    location ~ /\.                    { deny all; }
+
+    location / { try_files $uri $uri/ =404; }
+}
